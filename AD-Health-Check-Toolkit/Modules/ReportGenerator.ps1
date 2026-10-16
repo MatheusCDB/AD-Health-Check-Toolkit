@@ -624,9 +624,24 @@ function New-ADHCReport {
             $durText = ('{0:N1}s' -f $d.TotalSeconds)
         }
 
-        $dcList = @($results | Where-Object { $_.DomainController } |
+        # Normalize: if a short name matches the beginning of an FQDN in the
+        # same list, keep only the FQDN to avoid showing the same DC twice
+        # (e.g. "AD02" and "AD02.crg.local").
+        $rawDcs = @($results | Where-Object { $_.DomainController } |
                     Select-Object -ExpandProperty DomainController -Unique)
-        if ($dcList.Count -eq 0) { $dcEvaluated = 'Domain-wide' } else { $dcEvaluated = ($dcList -join ', ') }
+
+        $normalized = @()
+        foreach ($d in $rawDcs) {
+            $isShort = ($d -notmatch '\.')
+            if ($isShort) {
+                $match = $rawDcs | Where-Object { $_ -like "$d.*" } | Select-Object -First 1
+                if ($match) { continue }   # FQDN version exists; skip the short one
+            }
+            $normalized += $d
+        }
+
+        if ($normalized.Count -eq 0) { $dcEvaluated = 'Domain-wide' }
+        else                         { $dcEvaluated = ($normalized -join ', ') }
 
         $dataJson = ConvertTo-ADHCJsonData -Results $results
 
