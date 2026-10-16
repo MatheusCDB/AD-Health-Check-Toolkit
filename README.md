@@ -10,14 +10,14 @@
 **Stack:** PowerShell 7+ · Active Directory DS · DNS Server · DFSR · Group Policy · HTML/CSS/JS
 
 Uma ferramenta em PowerShell 7 para administradores de sistemas, analistas de infraestrutura e profissionais de suporte N2/N3 que precisam avaliar a saúde de um domínio Active Directory sem executar nenhuma operação destrutiva.
-
+```
 █████╗ ██████╗ ██╗ ██╗ ██████╗
 ██╔══██╗██╔══██╗██║ ██║██╔════╝
 ███████║██║ ██║███████║██║
 ██╔══██║██║ ██║██╔══██║██║
 ██║ ██║██████╔╝██║ ██║╚██████╗
 ╚═╝ ╚═╝╚═════╝ ╚═╝ ╚═╝ ╚═════╝
-
+```
 AD HEALTH CHECK TOOLKIT
 Active Directory health assessment
 PowerShell | Active Directory | DNS | Replication
@@ -117,4 +117,36 @@ ad-health-check-toolkit/
 ```
 Consulte docs/ARCHITECTURE.md para o design completo.
 
+---
+
+##Documentação
+
+Documento	Descrição
+docs/INSTALLATION.md	Como instalar e preparar o ambiente
+docs/USAGE.md	Todos os parâmetros, modos e exemplos
+docs/CHECKS.md	Catálogo completo das verificações
+docs/ARCHITECTURE.md	Design modular e fluxo de execução
+docs/SECURITY.md	Política read-only e dados coletados
+docs/TROUBLESHOOTING.md	Erros comuns e como agir
+docs/LIMITATIONS.md	Limitações conhecidas
+
+---
+
+##Segurança
+
+O toolkit é 100% read-only por design. Ele não:
+- Cria, modifica ou remove objetos do Active Directory.
+- Cria, modifica ou remove registros DNS.
+- Reinicia serviços.
+- Executa correções automáticas.
+- Armazena credenciais.
+
+Os comandos sugeridos no relatório são orientação para o analista, nunca executados pelo toolkit.
+Consulte docs/SECURITY.md para a política completa.
+
+---
+
+##Licença
+MIT © Matheus S Santos
+Projeto desenvolvido como portfólio técnico e ferramenta de uso profissional em ambientes Microsoft Windows Server / Active Directory.
 
