@@ -127,9 +127,9 @@ AD-Health-Check-Toolkit/
 
 | Documento | Descrição |
 |---|---|
-| [`Docs/getting-started.md`](Docs/getting-started.md) | Instalação, uso, referência de parâmetros e troubleshooting |
-| [`Docs/reference.md`](Docs/reference.md) | Catálogo completo de verificações, arquitetura e limitações |
-| [`Docs/security.md`](Docs/security.md) | Política read-only e dados coletados |
+| [`Docs/getting-started.md`](Docs/GETTING-STARTED.md) | Instalação, uso, referência de parâmetros e troubleshooting |
+| [`Docs/reference.md`](Docs/GETTING-STARTED.md) | Catálogo completo de verificações, arquitetura e limitações |
+| [`Docs/security.md`](Docs/SECURITY.md) | Política read-only e dados coletados |
 
 ---
 
@@ -143,7 +143,7 @@ O toolkit é **100% read-only by design**. Ele **não**:
 - ❌ Executa correções automáticas
 - ❌ Armazena credenciais
 
-> Os comandos sugeridos no relatório são **orientação para o analista**, nunca executados pelo toolkit. Consulte [`Docs/security.md`](Docs/security.md) para a política completa.
+> Os comandos sugeridos no relatório são **orientação para o analista**, nunca executados pelo toolkit. Consulte [`Docs/security.md`](Docs/SECURITY.md) para a política completa.
 
 ---
 
