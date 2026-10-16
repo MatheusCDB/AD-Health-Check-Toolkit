@@ -8,7 +8,7 @@
 
 Uma ferramenta em **PowerShell 7** para administradores de sistemas, analistas de infraestrutura e profissionais de suporte **N2/N3** que precisam avaliar a saúde de um domínio Active Directory **sem executar nenhuma operação destrutiva**.
 
-```
+```text
 █████╗ ██████╗ ██╗ ██╗ ██████╗
 ██╔══██╗██╔══██╗██║ ██║██╔════╝
 ███████║██║ ██║███████║██║
@@ -61,7 +61,7 @@ O toolkit avalia de forma **estruturada e independente**:
 - `RSAT-AD-PowerShell`, `RSAT-AD-Tools`, `RSAT-DNS-Server` *(recomendado)*
 - Privilégios de **leitura** em AD DS, DNS e logs de eventos
 
-> Veja `docs/INSTALLATION.md` para instruções detalhadas.
+> Veja [`docs/getting-started.md`](docs/getting-started.md) para instruções detalhadas.
 
 ---
 
@@ -69,8 +69,8 @@ O toolkit avalia de forma **estruturada e independente**:
 
 ```powershell
 # Clone o repositório
-git clone https://github.com/<user>/ad-health-check-toolkit.git
-cd ad-health-check-toolkit
+git clone https://github.com/MatheusCDB/AD-Health-Check-Toolkit.git
+cd AD-Health-Check-Toolkit
 
 # Modo interativo (TUI)
 .\Invoke-ADHealthCheck.ps1
@@ -100,14 +100,14 @@ Ao executar sem parâmetros, o toolkit abre a interface interativa:
 +-----------------------------------------------------------+
 ```
 
-> Consulte `docs/USAGE.md` para a lista completa de parâmetros.
+> Consulte [`docs/getting-started.md`](docs/getting-started.md) para a lista completa de parâmetros e exemplos.
 
 ---
 
 ## 📁 Estrutura do projeto
 
 ```text
-ad-health-check-toolkit/
+AD-Health-Check-Toolkit/
 ├── Invoke-ADHealthCheck.ps1   # Entry point
 ├── Core/                      # Result model, logging, severity, remoting
 ├── Modules/                   # Diagnostic categories + orchestrator
@@ -119,7 +119,7 @@ ad-health-check-toolkit/
 └── Examples/                  # Usage examples
 ```
 
-> Consulte `docs/ARCHITECTURE.md` para o design completo.
+> Consulte [`docs/reference.md`](docs/reference.md) para o design completo e o catálogo de verificações.
 
 ---
 
@@ -127,13 +127,9 @@ ad-health-check-toolkit/
 
 | Documento | Descrição |
 |---|---|
-| `docs/INSTALLATION.md` | Como instalar e preparar o ambiente |
-| `docs/USAGE.md` | Todos os parâmetros, modos e exemplos |
-| `docs/CHECKS.md` | Catálogo completo das verificações |
-| `docs/ARCHITECTURE.md` | Design modular e fluxo de execução |
-| `docs/SECURITY.md` | Política read-only e dados coletados |
-| `docs/TROUBLESHOOTING.md` | Erros comuns e como agir |
-| `docs/LIMITATIONS.md` | Limitações conhecidas |
+| [`docs/getting-started.md`](docs/getting-started.md) | Instalação, uso, referência de parâmetros e troubleshooting |
+| [`docs/reference.md`](docs/reference.md) | Catálogo completo de verificações, arquitetura e limitações |
+| [`docs/security.md`](docs/security.md) | Política read-only e dados coletados |
 
 ---
 
@@ -147,7 +143,7 @@ O toolkit é **100% read-only by design**. Ele **não**:
 - ❌ Executa correções automáticas
 - ❌ Armazena credenciais
 
-> Os comandos sugeridos no relatório são **orientação para o analista**, nunca executados pelo toolkit. Consulte `docs/SECURITY.md` para a política completa.
+> Os comandos sugeridos no relatório são **orientação para o analista**, nunca executados pelo toolkit. Consulte [`docs/security.md`](docs/security.md) para a política completa.
 
 ---
 
@@ -156,9 +152,3 @@ O toolkit é **100% read-only by design**. Ele **não**:
 **MIT** © Matheus S Santos
 
 > Projeto desenvolvido como **portfólio técnico** e ferramenta de uso profissional em ambientes **Microsoft Windows Server / Active Directory**.
-
----
-
-### 🏷️ Hashtags sugeridas
-
-`#ActiveDirectory` `#PowerShell` `#WindowsServer` `#SysAdmin` `#Infraestrutura` `#ITPro` `#CyberSecurity` `#DNS` `#DFSR` `#GroupPolicy` `#Automation` `#OpenSource`
