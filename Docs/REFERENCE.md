@@ -1,11 +1,10 @@
-```markdown
-# Reference
+# 📖 Reference
 
-Catálogo de verificações, arquitetura e limitações do AD Health Check Toolkit.
+Catálogo de verificações, arquitetura e limitações do **AD Health Check Toolkit**.
 
 ---
 
-## Índice
+## 📑 Índice
 
 1. [Catálogo de verificações](#1-catálogo-de-verificações)
 2. [Arquitetura](#2-arquitetura)
@@ -15,11 +14,11 @@ Catálogo de verificações, arquitetura e limitações do AD Health Check Toolk
 
 ## 1. Catálogo de verificações
 
-A ferramenta executa **~93 verificações** em 11 categorias. Cada verificação retorna um objeto estruturado com `CheckId`, `Status`, `Severity`, `Evidence`, `PotentialImpact`, `PossibleCauses`, `RecommendedInvestigation` e `SuggestedCommands`.
+A ferramenta executa **~93 verificações** em **11 categorias**. Cada verificação retorna um objeto estruturado com `CheckId`, `Status`, `Severity`, `Evidence`, `PotentialImpact`, `PossibleCauses`, `RecommendedInvestigation` e `SuggestedCommands`.
 
-### 1.1. Connectivity
+### 1.1 Connectivity
 
-Fonte: sockets TCP, `Resolve-DnsName`, ICMP, WinRM/CIM.
+**Fonte:** sockets TCP, `Resolve-DnsName`, ICMP, WinRM/CIM.
 
 | CheckId | O que verifica | Severidade base |
 |---|---|---|
@@ -37,9 +36,9 @@ Fonte: sockets TCP, `Resolve-DnsName`, ICMP, WinRM/CIM.
 | `CONN-ADMIN` | Acesso administrativo via WinRM/CIM | Medium |
 | `CONN-REACH` | Resumo de alcance do DC | Critical |
 
-### 1.2. Services
+### 1.2 Services
 
-Fonte: `Get-Service` local ou remoto.
+**Fonte:** `Get-Service` local ou remoto.
 
 | CheckId | O que verifica |
 |---|---|
@@ -51,9 +50,9 @@ Fonte: `Get-Service` local ou remoto.
 | `SVC-KDC` | Serviço Kerberos Key Distribution Center |
 | `SVC-LANMANSERVER` | Serviço Server (SMB) |
 
-### 1.3. DNS
+### 1.3 DNS
 
-Fonte: `Get-DnsServerZone`, `Get-DnsServerResourceRecord`, `Resolve-DnsName`, `dcdiag /test:dns /v`.
+**Fonte:** `Get-DnsServerZone`, `Get-DnsServerResourceRecord`, `Resolve-DnsName`, `dcdiag /test:dns /v`.
 
 | CheckId | O que verifica | Severidade base |
 |---|---|---|
@@ -70,9 +69,9 @@ Fonte: `Get-DnsServerZone`, `Get-DnsServerResourceRecord`, `Resolve-DnsName`, `d
 | `DNS-DCDIAG` | Veredito agregado do `dcdiag /test:dns` | High |
 | `DNS-ZONE-QUERY` | Falha ao enumerar zonas | Medium |
 
-### 1.4. Replication
+### 1.4 Replication
 
-Fonte: `Get-ADReplicationFailure`, `Get-ADReplicationPartnerMetadata`, `Get-ADReplicationSiteLink`, `repadmin /replsummary`.
+**Fonte:** `Get-ADReplicationFailure`, `Get-ADReplicationPartnerMetadata`, `Get-ADReplicationSiteLink`, `repadmin /replsummary`.
 
 | CheckId | O que verifica |
 |---|---|
@@ -84,9 +83,9 @@ Fonte: `Get-ADReplicationFailure`, `Get-ADReplicationPartnerMetadata`, `Get-ADRe
 | `REPL-REPADMIN-PARSE` | Parser reconheceu `repadmin /replsummary` |
 | `REPL-REPADMIN-SUMMARY` | Veredito agregado do `repadmin /replsummary` |
 
-### 1.5. FSMO
+### 1.5 FSMO
 
-Fonte: `Get-ADDomain`, `Get-ADForest`.
+**Fonte:** `Get-ADDomain`, `Get-ADForest`.
 
 | CheckId | O que verifica |
 |---|---|
@@ -94,9 +93,9 @@ Fonte: `Get-ADDomain`, `Get-ADForest`.
 | `FSMO-FOREST-ROLES` | Schema Master, Domain Naming em DCs acessíveis |
 | `FSMO-INFRASTRUCTURE-GC` | Infrastructure Master não é GC (exceto se todos forem) |
 
-### 1.6. SYSVOL / NETLOGON
+### 1.6 SYSVOL / NETLOGON
 
-Fonte: `Get-SmbShare`, `Test-Path` em UNC, `Get-Service DFSR`.
+**Fonte:** `Get-SmbShare`, `Test-Path` em UNC, `Get-Service DFSR`.
 
 | CheckId | O que verifica |
 |---|---|
@@ -108,9 +107,9 @@ Fonte: `Get-SmbShare`, `Test-Path` em UNC, `Get-Service DFSR`.
 | `NETLOGON-SHARE-CONTENT` | NETLOGON contém arquivos (INFO) |
 | `SYSVOL-DFSR-BACKLOG` | (multi-DC) backlog de replicação |
 
-### 1.7. TimeSynchronization
+### 1.7 TimeSynchronization
 
-Fonte: `Get-Service`, `w32tm /query /status`, `/configuration`, `/peers`, `/stripchart`.
+**Fonte:** `Get-Service`, `w32tm /query /status`, `/configuration`, `/peers`, `/stripchart`.
 
 | CheckId | O que verifica |
 |---|---|
@@ -124,17 +123,19 @@ Fonte: `Get-Service`, `w32tm /query /status`, `/configuration`, `/peers`, `/stri
 | `TIME-OFFSET` | Offset < 5s contra a fonte |
 | `TIME-W32TM-PARSE` | Parser reconheceu `w32tm` |
 
-### 1.8. DCDiag (opt-in)
+### 1.8 DCDiag *(opt-in)*
 
-Fonte: 13 invocações individuais de `dcdiag /test:X`.
+**Fonte:** 13 invocações individuais de `dcdiag /test:X`.
 
-Cada teste vira um check: `DCDIAG-CONNECTIVITY`, `DCDIAG-ADVERTISING`, `DCDIAG-SERVICES`, `DCDIAG-REPLICATIONS`, `DCDIAG-SYSVOLCHECK`, `DCDIAG-NETLOGONS`, `DCDIAG-FSMOCHECK`, `DCDIAG-KNOWSOFROLEHOLDERS`, `DCDIAG-MACHINEACCOUNT`, `DCDIAG-SYSTEMLOG`, `DCDIAG-TOPOLOGY`, `DCDIAG-VERIFYREFERENCES`, `DCDIAG-LOCATORCHECK`.
+Cada teste vira um check:
+
+`DCDIAG-CONNECTIVITY`, `DCDIAG-ADVERTISING`, `DCDIAG-SERVICES`, `DCDIAG-REPLICATIONS`, `DCDIAG-SYSVOLCHECK`, `DCDIAG-NETLOGONS`, `DCDIAG-FSMOCHECK`, `DCDIAG-KNOWSOFROLEHOLDERS`, `DCDIAG-MACHINEACCOUNT`, `DCDIAG-SYSTEMLOG`, `DCDIAG-TOPOLOGY`, `DCDIAG-VERIFYREFERENCES`, `DCDIAG-LOCATORCHECK`.
 
 Mais `DCDIAG-PARSE` (cobertura do parser).
 
-### 1.9. EventLogs (opt-in)
+### 1.9 EventLogs *(opt-in)*
 
-Fonte: `Get-WinEvent` com filtro por IDs significativos e período.
+**Fonte:** `Get-WinEvent` com filtro por IDs significativos e período.
 
 | CheckId | Log | IDs significativos |
 |---|---|---|
@@ -142,13 +143,13 @@ Fonte: `Get-WinEvent` com filtro por IDs significativos e período.
 | `EVT-DNS-SERVER` | DNS Server | 4010, 4013, 4015, ... |
 | `EVT-DFS-REPLICATION` | DFS Replication | 4004, 4012, 4602, ... |
 | `EVT-SYSTEM` | System | 5719, 5783, 1128, ... |
-| `EVT-SECURITY` | Security (opt-in) | 4625, 4740, 4771, 4776 |
+| `EVT-SECURITY` | Security *(opt-in)* | 4625, 4740, 4771, 4776 |
 
-IDs na whitelist (`AcceptableIds` em `Defaults.psd1`) são registrados mas **nunca elevam severidade**.
+> IDs na whitelist (`AcceptableIds` em `Defaults.psd1`) são registrados mas **nunca elevam severidade**.
 
-### 1.10. Topology (opt-in)
+### 1.10 Topology *(opt-in)*
 
-Fonte: `Get-ADReplicationSite`, `Get-ADReplicationSubnet`, `Get-ADReplicationSiteLink`, `Get-ADReplicationConnection`, `Get-ADObject`.
+**Fonte:** `Get-ADReplicationSite`, `Get-ADReplicationSubnet`, `Get-ADReplicationSiteLink`, `Get-ADReplicationConnection`, `Get-ADObject`.
 
 | CheckId | O que verifica |
 |---|---|
@@ -161,9 +162,9 @@ Fonte: `Get-ADReplicationSite`, `Get-ADReplicationSubnet`, `Get-ADReplicationSit
 | `TOPO-CONNECTIONS` | Objetos de conexão KCC |
 | `TOPO-ISTG` | ISTG por site (INFO) |
 
-### 1.11. GroupPolicy (opt-in)
+### 1.11 GroupPolicy *(opt-in)*
 
-Fonte: `Get-GPO`, `Get-ChildItem` em `\\DC\SYSVOL\<domain>\Policies`.
+**Fonte:** `Get-GPO`, `Get-ChildItem` em `\\DC\SYSVOL\<domain>\Policies`.
 
 | CheckId | O que verifica |
 |---|---|
@@ -181,81 +182,85 @@ Fonte: `Get-GPO`, `Get-ChildItem` em `\\DC\SYSVOL\<domain>\Policies`.
 
 ## 2. Arquitetura
 
-### 2.1. Visão geral
+### 2.1 Visão geral
+
+```text
 ┌─────────────────────────────────────────────────────────────┐
-│ Invoke-ADHealthCheck.ps1 (entry point) │
-│ - Bootstrap PS7 │
-│ - Load Core/Config │
-│ - Detecta modo: TUI (sem params) vs. clássico (com params) │
+│              Invoke-ADHealthCheck.ps1 (entry point)         │
+│  - Bootstrap PS7                                            │
+│  - Load Core/Config                                         │
+│  - Detecta modo: TUI (sem params) vs. clássico (com params) │
 └────────────┬─────────────────────────────────┬──────────────┘
-│ │
-┌───────▼─────────┐ ┌─────────▼─────────┐
-│ UI/ (TUI) │ │ Modo clássico │
-│ Banner, menu, │ │ Chama Invoke- │
-│ seleção, prog. │ │ ADHCAssessment │
-└───────┬─────────┘ └─────────┬─────────┘
-│ │
-└──────────────┬──────────────────┘
-│
-┌─────────▼──────────┐
-│ Orchestrator.ps1 │
-│ Invoke-ADHCAssess │
-└─────────┬──────────┘
-│
-┌───────────┼────────────┐
-│ │ │
-┌─────▼────┐ ┌────▼─────┐ ┌───▼──────┐
-│ Modules/ │ │ Modules/ │ │ Modules/ │
-│Connectiv.│ │ DNS │ │ ... 11 │
-└──────────┘ └──────────┘ └──────────┘
+             │                                 │
+     ┌───────▼─────────┐               ┌───────▼─────────┐
+     │   UI/ (TUI)     │               │  Modo clássico  │
+     │  Banner, menu,  │               │   Chama Invoke- │
+     │  seleção, prog. │               │   ADHCAssessment│
+     └───────┬─────────┘               └───────┬─────────┘
+             │                                 │
+             └──────────────┬──────────────────┘
+                            │
+                  ┌─────────▼──────────┐
+                  │  Orchestrator.ps1  │
+                  │  Invoke-ADHCAssess │
+                  └─────────┬──────────┘
+                            │
+             ┌──────────────┼──────────────┐
+             │              │              │
+        ┌────▼────┐    ┌────▼────┐    ┌────▼────┐
+        │Modules/ │    │Modules/ │    │Modules/ │
+        │Connectiv│    │  DNS    │    │ ... 11  │
+        └─────────┘    └─────────┘    └─────────┘
+```
 
-### 2.2. Estrutura de diretórios
+### 2.2 Estrutura de diretórios
+
+```text
 ad-health-check-toolkit/
-├── Invoke-ADHealthCheck.ps1 # Entry point
-├── Core/ # Result model, logging, severity, remoting
-│ ├── Core.psd1 / Core.psm1
-│ ├── ResultModel.ps1
-│ ├── Logger.ps1
-│ ├── CapabilityProbe.ps1
-│ ├── Remoting.ps1
-│ └── Severity.ps1
-├── Modules/ # Diagnóstico + orquestrador
-│ ├── Discovery.ps1
-│ ├── Orchestrator.ps1
-│ ├── Connectivity.ps1
-│ ├── Services.ps1
-│ ├── DNS.ps1
-│ ├── Replication.ps1
-│ ├── FSMO.ps1
-│ ├── SysvolNetlogon.ps1
-│ ├── TimeSynchronization.ps1
-│ ├── DCDiag.ps1
-│ ├── EventLogs.ps1
-│ ├── Topology.ps1
-│ ├── GroupPolicy.ps1
-│ ├── HealthScoring.ps1
-│ └── ReportGenerator.ps1
-├── UI/ # Interface interativa
-│ ├── UI.ps1
-│ ├── UI.Console.ps1
-│ ├── UI.Banner.ps1
-│ ├── UI.MainMenu.ps1
-│ ├── UI.CheckSelection.ps1
-│ ├── UI.Progress.ps1
-│ ├── UI.Summary.ps1
-│ └── UI.ExportMenu.ps1
-├── Config/ # Configuração versionada
-│ ├── Defaults.psd1
-│ ├── CheckCatalog.psd1
-│ └── SeverityRules.psd1
-├── Reports/ # Relatórios gerados (gitignored)
-├── docs/ # Documentação
-├── Tests/ # Testes (planejado)
-└── Examples/ # Exemplos de uso
+├── Invoke-ADHealthCheck.ps1        # Entry point
+├── Core/                           # Result model, logging, severity, remoting
+│   ├── Core.psd1 / Core.psm1
+│   ├── ResultModel.ps1
+│   ├── Logger.ps1
+│   ├── CapabilityProbe.ps1
+│   ├── Remoting.ps1
+│   └── Severity.ps1
+├── Modules/                        # Diagnóstico + orquestrador
+│   ├── Discovery.ps1
+│   ├── Orchestrator.ps1
+│   ├── Connectivity.ps1
+│   ├── Services.ps1
+│   ├── DNS.ps1
+│   ├── Replication.ps1
+│   ├── FSMO.ps1
+│   ├── SysvolNetlogon.ps1
+│   ├── TimeSynchronization.ps1
+│   ├── DCDiag.ps1
+│   ├── EventLogs.ps1
+│   ├── Topology.ps1
+│   ├── GroupPolicy.ps1
+│   ├── HealthScoring.ps1
+│   └── ReportGenerator.ps1
+├── UI/                             # Interface interativa
+│   ├── UI.ps1
+│   ├── UI.Console.ps1
+│   ├── UI.Banner.ps1
+│   ├── UI.MainMenu.ps1
+│   ├── UI.CheckSelection.ps1
+│   ├── UI.Progress.ps1
+│   ├── UI.Summary.ps1
+│   └── UI.ExportMenu.ps1
+├── Config/                         # Configuração versionada
+│   ├── Defaults.psd1
+│   ├── CheckCatalog.psd1
+│   └── SeverityRules.psd1
+├── Reports/                        # Relatórios gerados (gitignored)
+├── docs/                           # Documentação
+├── Tests/                          # Testes (planejado)
+└── Examples/                       # Exemplos de uso
+```
 
-text
-
-### 2.3. Contrato de resultado
+### 2.3 Contrato de resultado
 
 Toda verificação retorna um objeto `ADHC.CheckResult` com:
 
@@ -285,63 +290,63 @@ Toda verificação retorna um objeto `ADHC.CheckResult` com:
 | `ModuleVersion` | string | Versão do módulo |
 | `ToolUsed` | string | Ferramenta/cmdlet usada |
 
-### 2.4. Fluxo de execução
+### 2.4 Fluxo de execução
 
-1. **Bootstrap**: se PS 5.1, instala PS 7 e relança.
-2. **Load**: importa `Core/`, carrega `Config/*.psd1`, dot-sourceia `Discovery.ps1`, `HealthScoring.ps1`, `ReportGenerator.ps1`, `Orchestrator.ps1`.
-3. **Capability probe**: verifica módulos RSAT, `dcdiag`, `repadmin`, `w32tm`, elevação.
-4. **Detecção de modo**: TUI se sem parâmetros ou `-Interactive`; senão clássico.
-5. **Discovery**: enumera DCs, papéis FSMO, floresta, sites.
-6. **Orquestração**: para cada categoria selecionada, dot-sourceia o módulo, chama `Invoke-ADHC<Category>` com `-Context`, captura exceções individualmente.
-7. **Consolidação**: agrega resultados, recalcula alcançabilidade, aplica score.
-8. **Relatório**: gera HTML, JSON, CSV em `Reports/<timestamp>/`.
-9. **Sumário**: exibe resumo executivo (TUI: painel; clássico: texto).
+1. **Bootstrap** — se PS 5.1, instala PS 7 e relança.
+2. **Load** — importa `Core/`, carrega `Config/*.psd1`, dot-sourceia `Discovery.ps1`, `HealthScoring.ps1`, `ReportGenerator.ps1`, `Orchestrator.ps1`.
+3. **Capability probe** — verifica módulos RSAT, `dcdiag`, `repadmin`, `w32tm`, elevação.
+4. **Detecção de modo** — TUI se sem parâmetros ou `-Interactive`; senão clássico.
+5. **Discovery** — enumera DCs, papéis FSMO, floresta, sites.
+6. **Orquestração** — para cada categoria selecionada, dot-sourceia o módulo, chama `Invoke-ADHC<Category>` com `-Context`, captura exceções individualmente.
+7. **Consolidação** — agrega resultados, recalcula alcançabilidade, aplica score.
+8. **Relatório** — gera HTML, JSON, CSV em `Reports/<timestamp>/`.
+9. **Sumário** — exibe resumo executivo (TUI: painel; clássico: texto).
 
-### 2.5. Princípios de design
+### 2.5 Princípios de design
 
-- **Read-only por construção**. Nenhum cmdlet destrutivo é executado.
-- **Isolamento de falha**. Uma categoria que falha não interrompe as demais.
-- **Fonte estruturada primeiro**. Cmdlets `Get-AD*`/`Get-Dns*` preferidos; ferramentas externas como evidência.
-- **Localização tratada**. Parsers para pt-BR e en-US; texto não reconhecido vira `UNKNOWN`, nunca `PASS`.
-- **Sem dependências externas**. Só PowerShell 7, RSAT e binários nativos.
-- **Configuração versionada**. Severidade, catálogo e defaults em `.psd1`.
-- **Contrato único**. Todo módulo retorna `CheckResult[]`.
+- 🔒 **Read-only por construção** — nenhum cmdlet destrutivo é executado.
+- 🧱 **Isolamento de falha** — uma categoria que falha não interrompe as demais.
+- 🎯 **Fonte estruturada primeiro** — cmdlets `Get-AD*`/`Get-Dns*` preferidos; ferramentas externas como evidência.
+- 🌎 **Localização tratada** — parsers para pt-BR e en-US; texto não reconhecido vira `UNKNOWN`, nunca `PASS`.
+- 📦 **Sem dependências externas** — só PowerShell 7, RSAT e binários nativos.
+- ⚙️ **Configuração versionada** — severidade, catálogo e defaults em `.psd1`.
+- 🧩 **Contrato único** — todo módulo retorna `CheckResult[]`.
 
 ---
 
 ## 3. Limitações conhecidas
 
-### 3.1. Funcionais
+### 3.1 Funcionais
 
-- **IPv6 / AAAA**: verificações desabilitadas por padrão (`IgnoreIPv6 = $true`).
-- **DNS reverso para IPs sem zona**: reportado como `INFO`, não como falha.
-- **Security log**: coleta restrita a 4 IDs, opt-in duplo (`-IncludeEventLogs` + `-IncludeSecurityLog`).
-- **DFSR backlog multi-DC**: implementado como stub (multi-DC), aguardando validação em ambiente com 2+ DCs.
-- **GPO**: foco em infraestrutura (AD ↔ SYSVOL), não em análise de políticas específicas.
+- **IPv6 / AAAA** — verificações desabilitadas por padrão (`IgnoreIPv6 = $true`).
+- **DNS reverso para IPs sem zona** — reportado como `INFO`, não como falha.
+- **Security log** — coleta restrita a 4 IDs, opt-in duplo (`-IncludeEventLogs` + `-IncludeSecurityLog`).
+- **DFSR backlog multi-DC** — implementado como stub (multi-DC), aguardando validação em ambiente com 2+ DCs.
+- **GPO** — foco em infraestrutura (AD ↔ SYSVOL), não em análise de políticas específicas.
 
-### 3.2. Técnicas
+### 3.2 Técnicas
 
-- **Parsing de ferramentas externas**: `repadmin`, `dcdiag` e `w32tm` produzem saída textual. Parsers são testados em pt-BR e en-US, mas builds futuras do Windows Server podem alterar o formato. Texto não reconhecido vira `UNKNOWN`.
-- **Encoding de console**: ferramentas externas escrevem em CP-850 (OEM pt-BR). Lido explicitamente como CP-850 para preservar acentos.
-- **Modo interativo em SSH/WinRM**: a TUI usa `[Console]::ReadKey` e reposicionamento de cursor. Funciona em Windows Terminal e `conhost`. Pode degradar em sessões SSH ou WinRM.
-- **Paralelismo**: a orquestração é sequencial. `-ThrottleLimit` existe mas ainda não é usado extensivamente.
+- **Parsing de ferramentas externas** — `repadmin`, `dcdiag` e `w32tm` produzem saída textual. Parsers são testados em pt-BR e en-US, mas builds futuras do Windows Server podem alterar o formato. Texto não reconhecido vira `UNKNOWN`.
+- **Encoding de console** — ferramentas externas escrevem em CP-850 (OEM pt-BR). Lido explicitamente como CP-850 para preservar acentos.
+- **Modo interativo em SSH/WinRM** — a TUI usa `[Console]::ReadKey` e reposicionamento de cursor. Funciona em Windows Terminal e `conhost`. Pode degradar em sessões SSH ou WinRM.
+- **Paralelismo** — a orquestração é sequencial. `-ThrottleLimit` existe mas ainda não é usado extensivamente.
 
-### 3.3. Cobertura não implementada
+### 3.3 Cobertura não implementada
 
-- **Testes unitários automatizados**: planejado para versões futuras. A versão 0.1.0 foi validada contra ambientes AD reais.
-- **Análise de clientes**: a ferramenta avalia infraestrutura, não clientes.
-- **GPO processing em endpoints**: não escopo.
-- **Schema/Configuration partition forensics**: não escopo.
+- **Testes unitários automatizados** — planejado para versões futuras. A versão 0.1.0 foi validada contra ambientes AD reais.
+- **Análise de clientes** — a ferramenta avalia infraestrutura, não clientes.
+- **GPO processing em endpoints** — não escopo.
+- **Schema/Configuration partition forensics** — não escopo.
 
-### 3.4. Ambientes com comportamento diferente
+### 3.4 Ambientes com comportamento diferente
 
-- **Domínios com 1 DC**: verificações multi-DC emitem `INFO` "single-DC domain; not applicable" em vez de `UNKNOWN`.
-- **RODCs**: verificações não ajustam o comportamento para RODCs (a ferramenta foi validada em DCs completos).
-- **Florestas multi-domínio**: `-Domain` avalia um domínio por vez.
+- **Domínios com 1 DC** — verificações multi-DC emitem `INFO` "single-DC domain; not applicable" em vez de `UNKNOWN`.
+- **RODCs** — verificações não ajustam o comportamento para RODCs (a ferramenta foi validada em DCs completos).
+- **Florestas multi-domínio** — `-Domain` avalia um domínio por vez.
 
 ---
 
-## Ver também
+## 🔗 Ver também
 
-- [Getting Started](GETTING-STARTED.md) — instalação, uso e troubleshooting.
-- [Security](SECURITY.md) — política read-only e dados coletados.
+- [Getting Started](getting-started.md) — instalação, uso e troubleshooting.
+- [Security](security.md) — política read-only e dados coletados.
