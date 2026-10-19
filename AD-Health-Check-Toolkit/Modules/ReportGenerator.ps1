@@ -470,6 +470,67 @@ function Get-ADHCHtmlTemplate {
 
 #region --- Helpers ---
 
+function Resolve-ADHCReportDcLabel {
+    <#
+    .SYNOPSIS
+        Normalizes DomainController values in a set of results so the same DC
+        is always identified by its FQDN when both FQDN and short name are
+        present.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][AllowEmptyCollection()][object[]]$Results
+    )
+
+    # Collect all raw values to detect equivalences.
+    $rawValues = @($Results | Where-Object { $_.DomainController } |
+                   Select-Object -ExpandProperty DomainController -Unique)
+
+    # Build a map: any value that is the prefix of a longer value maps to the longer one.
+    $map = @{}
+    foreach ($v in $rawValues) {
+        $map[$v] = $v
+    }
+    foreach ($short in $rawValues) {
+        if ($short -match '\.') { continue }
+        $match = $rawValues | Where-Object { $_ -like "$short.*" } | Select-Object -First 1
+        if ($match) { $map[$short] = $match }
+    }
+
+    # Return a new array where DomainController has been normalized.
+    $out = foreach ($r in $Results) {
+        $dc = $r.DomainController
+        if ($dc -and $map.ContainsKey($dc)) { $dc = $map[$dc] }
+        [PSCustomObject]@{
+            # Clone the object with updated DomainController.
+            CheckId                  = $r.CheckId
+            Category                 = $r.Category
+            Domain                   = $r.Domain
+            DomainController         = $dc
+            ComputerName             = $r.ComputerName
+            Status                   = $r.Status
+            Severity                 = $r.Severity
+            Title                    = $r.Title
+            Description              = $r.Description
+            Evidence                 = $r.Evidence
+            PotentialImpact          = $r.PotentialImpact
+            PossibleCauses           = $r.PossibleCauses
+            RecommendedInvestigation = $r.RecommendedInvestigation
+            SuggestedCommands        = $r.SuggestedCommands
+            DetectedAt               = $r.DetectedAt
+            Duration                 = $r.Duration
+            ErrorCode                = $r.ErrorCode
+            IsInconclusive           = $r.IsInconclusive
+            RequiresElevation        = $r.RequiresElevation
+            WasSkipped               = $r.WasSkipped
+            SkipReason               = $r.SkipReason
+            ModuleVersion            = $r.ModuleVersion
+            ToolUsed                 = $r.ToolUsed
+        }
+    }
+    ,@($out)
+}
+
 function ConvertTo-ADHCCsvRows {
     [CmdletBinding()]
     param([Parameter(Mandatory)][AllowEmptyCollection()][object[]]$Results)
@@ -562,6 +623,10 @@ function New-ADHCReport {
 
     $results = @($Consolidated.Results)
 
+    # Normalize DC labels before generating the JSON/HTML so the DC filter shows
+    # only one option per DC (e.g. AD02 and AD02.crg.local collapse to AD02.crg.local).
+    $results = Resolve-ADHCReportDcLabel -Results $results
+
     # -------- Counters --------
     $counts = @{ PASS=0; INFO=0; WARNING=0; FAIL=0; UNKNOWN=0 }
     foreach ($r in $results) {
@@ -624,24 +689,14 @@ function New-ADHCReport {
             $durText = ('{0:N1}s' -f $d.TotalSeconds)
         }
 
-        # Normalize: if a short name matches the beginning of an FQDN in the
-        # same list, keep only the FQDN to avoid showing the same DC twice
-        # (e.g. "AD02" and "AD02.crg.local").
-        $rawDcs = @($results | Where-Object { $_.DomainController } |
-                    Select-Object -ExpandProperty DomainController -Unique)
+        # DC_EVALUATED: results are already normalized, so unique values are
+        # one-per-DC. If empty (domain-wide checks only), fall back to label.
+        $uniqueDcs = @($results | Where-Object { $_.DomainController } |
+                       Select-Object -ExpandProperty DomainController -Unique |
+                       Sort-Object)
 
-        $normalized = @()
-        foreach ($d in $rawDcs) {
-            $isShort = ($d -notmatch '\.')
-            if ($isShort) {
-                $match = $rawDcs | Where-Object { $_ -like "$d.*" } | Select-Object -First 1
-                if ($match) { continue }   # FQDN version exists; skip the short one
-            }
-            $normalized += $d
-        }
-
-        if ($normalized.Count -eq 0) { $dcEvaluated = 'Domain-wide' }
-        else                         { $dcEvaluated = ($normalized -join ', ') }
+        if ($uniqueDcs.Count -eq 0) { $dcEvaluated = 'Domain-wide' }
+        else                        { $dcEvaluated = ($uniqueDcs -join ', ') }
 
         $dataJson = ConvertTo-ADHCJsonData -Results $results
 
