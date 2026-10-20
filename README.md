@@ -2,10 +2,13 @@
 
 **Diagnóstico, auditoria e avaliação preventiva da saúde do Active Directory Domain Services (AD DS) — 100% read-only.**
 
-`PowerShell 7+` · `Active Directory DS` · `DNS Server` · `DFSR` · `Group Policy` · `HTML/CSS/JS`
-
 ![PowerShell 7+](https://img.shields.io/badge/PowerShell-7%2B-blue)
-![PowerShell 7+](https://img.shields.io/badge/PowerShell-7%2B-blue)
+![Active Directory](https://img.shields.io/badge/Active%20Directory-0078D4?logo=windows&logoColor=white)
+![DNS Server](https://img.shields.io/badge/DNS%20Server-4B275F)
+![DFSR](https://img.shields.io/badge/DFSR-6A1B9A)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 
 ---
 
