@@ -4,6 +4,9 @@
 
 `PowerShell 7+` · `Active Directory DS` · `DNS Server` · `DFSR` · `Group Policy` · `HTML/CSS/JS`
 
+![PowerShell 7+](https://img.shields.io/badge/PowerShell-7%2B-blue)
+![PowerShell 7+](https://img.shields.io/badge/PowerShell-7%2B-blue)
+
 ---
 
 Uma ferramenta em **PowerShell 7** para administradores de sistemas, analistas de infraestrutura e profissionais de suporte **N2/N3** que precisam avaliar a saúde de um domínio Active Directory **sem executar nenhuma operação destrutiva**.
