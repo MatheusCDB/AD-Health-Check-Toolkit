@@ -24,7 +24,6 @@ Uma ferramenta em **PowerShell 7** para administradores de sistemas, analistas d
 ```
 
 **AD HEALTH CHECK TOOLKIT** — *Active Directory health assessment*
-`PowerShell | Active Directory | DNS | Replication`
 
 ---
 
