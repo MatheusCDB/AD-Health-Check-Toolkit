@@ -38,7 +38,7 @@ O toolkit avalia de forma **estruturada e independente**:
 - 📋 **Eventos relevantes do Windows** — Directory Service, DNS, DFSR, System
 - 🧩 **Políticas de Grupo** — consistência AD ↔ SYSVOL
 
-> Cada verificação retorna um objeto estruturado com **evidência**, **impacto potencial**, **causas possíveis**, **investigação recomendada** e **comandos sugeridos** — mas **nenhum comando é executado automaticamente**.
+> Cada verificação retorna um objeto estruturado com **evidência**, **impacto potencial**, **causas possíveis**, **investigação recomendada** e **comandos sugeridos** mas **nenhum comando é executado automaticamente**.
 
 ---
 
